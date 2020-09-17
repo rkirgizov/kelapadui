@@ -24,6 +24,13 @@ kelaSetsScene:AddFragmentGroup(FRAGMENT_GROUP.FRAME_TARGET_GAMEPAD_RIGHT)
 kelaSetsScene:AddFragment(GAMEPAD_NAV_QUADRANT_1_BACKGROUND_FRAGMENT)
 kelaSetsScene:AddFragment(MINIMIZE_CHAT_FRAGMENT)
 kelaSetsScene:AddFragment(GAMEPAD_MENU_SOUND_FRAGMENT)
+
+
+GAMEPAD_SETS_LIST_FRAGMENT = ZO_FadeSceneFragment:New(Kela_Sets_List_Gamepad)
+
+kelaSetsScene:AddFragment(GAMEPAD_SETS_LIST_FRAGMENT)
+
+ 
 local kelaResearchScene = SCENE_MANAGER:GetScene("kelaResearch")
 kelaResearchScene:AddFragmentGroup(FRAGMENT_GROUP.GAMEPAD_DRIVEN_UI_WINDOW)
 kelaResearchScene:AddFragmentGroup(FRAGMENT_GROUP.FRAME_TARGET_GAMEPAD_RIGHT)
@@ -77,7 +84,7 @@ function KelaPadUI:GetItemLinkResearchStatus(link)
 				table.insert(self.altsResearchStatus[kpuiSV.characters[k][tradeSkill][resIndex][traitType]], k)
 			end
 		end
-	end
+	end	
 
 	if not (kpuiSV.characters[self.unitName][tradeSkill] and resIndex) then
 		return nil
@@ -126,7 +133,7 @@ function KelaPadUI_OnResearchCompleted(eventType, craftingSkillType, researchLin
 	-- KelaPostMsg("KelaPadUI_OnResearchCompleted")
 	KelaPadUI:InitializeResearchableItems()
 	--RefreshInfoTooltipResearchStation()
-	kelaInitializeResearchPanel()
+	kelaInitializeResearchPanel(craftingSkillType, researchLineIndex)
 end
 function KelaPadUI_OnResearchStarted(eventType, craftingSkillType, researchLineIndex, traitIndex)
 	if not kpuiSV.characters[KelaPadUI.unitName][craftingSkillType] then
@@ -137,7 +144,7 @@ function KelaPadUI_OnResearchStarted(eventType, craftingSkillType, researchLineI
 	-- KelaPostMsg("KelaPadUI_OnResearchStarted")
 	KelaPadUI:InitializeResearchableItems()
 	--RefreshInfoTooltipResearchStation()
-	kelaInitializeResearchPanel()
+	kelaInitializeResearchPanel(craftingSkillType, researchLineIndex)
 end
 function KelaPadUI_OnResearchCanseled(eventType, craftingSkillType, researchLineIndex, traitIndex)
 	if not kpuiSV.characters[KelaPadUI.unitName][craftingSkillType] then
@@ -148,7 +155,7 @@ function KelaPadUI_OnResearchCanseled(eventType, craftingSkillType, researchLine
 	-- KelaPostMsg("KelaPadUI_OnResearchCanseled")
 	KelaPadUI:InitializeResearchableItems()
 	--RefreshInfoTooltipResearchStation(true)
-	kelaInitializeResearchPanel()
+	kelaInitializeResearchPanel(craftingSkillType, researchLineIndex)
 end
 
 -- function KelaPadUI_RefreshResearchPanel(control)
