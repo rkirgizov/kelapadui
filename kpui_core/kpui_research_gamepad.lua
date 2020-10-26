@@ -420,12 +420,12 @@ end
 function Kela_Research:OnHiding()
 	selectedIndex = self:GetMainList():GetSelectedIndex()
 	Kela_Research:RemoveResearchPanelFocus()	
-	KPUI_GAMEPAD_TOOLTIPS:ClearContentHeader(KPUI_GAMEPAD_WIDE_CRAFTING_TOOLTIP)
+	KPUI_GAMEPAD_TOOLTIPS:ClearContentHeader(KPUI_GAMEPAD_WIDE_RESEARCH_TOOLTIP)
 end
 
 
 
-function kelaInitializeResearchPanel()
+function kelaInitializeResearchPanel(craftingSkillType)
 
 	local tooltipInfo = KPUI_GAMEPAD_TOOLTIPS:GetTooltipTop(KPUI_GAMEPAD_WIDE_RESEARCH_TOOLTIP)
 	
@@ -710,6 +710,24 @@ function kelaInitializeResearchPanel()
 		end
 		ResearchPanelIsInitialize = true
 		indexResearchPanel = 1
+	elseif craftingSkillType then
+		if craftingSkillType == CRAFTING_TYPE_BLACKSMITHING then
+			for index = 1, 2 do
+				fillResearchPanel(index)
+			end
+		elseif craftingSkillType == CRAFTING_TYPE_CLOTHIER then
+			for index = 3, 4 do
+				fillResearchPanel(index)
+			end
+		elseif craftingSkillType == CRAFTING_TYPE_WOODWORKING then
+			for index = 5, 6 do
+				fillResearchPanel(index)
+			end
+		elseif craftingSkillType == CRAFTING_TYPE_JEWELRYCRAFTING then
+			for index = 7, 7 do
+				fillResearchPanel(index)
+			end
+		end
 	else
 		fillResearchPanel()
 	end

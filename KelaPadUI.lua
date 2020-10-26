@@ -6,6 +6,9 @@ TRAIT_RESEARCHABLE = 0
 TRAIT_KNOWN = 1
 TRAIT_RESEARCH_IN_PROGRESS = 2
 
+KELA_SETS_WARNING_TOOLTIP_SHOW = true
+
+
 local colors = kpuiConst.Colors	
 
 kelaResearchPanelNeedRefresh = false
@@ -18,17 +21,39 @@ SafeAddString(SI_ITEM_FORMAT_STR_SET_NAME, "<<1>> (<<2>>/<<3>>)", 6)
 
 
 --Сцены KelaPadUI
+-- local kelaSetsScene = SCENE_MANAGER:GetScene("kelaSets")
+-- kelaSetsScene:AddFragmentGroup(FRAGMENT_GROUP.GAMEPAD_DRIVEN_UI_WINDOW)
+-- kelaSetsScene:AddFragmentGroup(FRAGMENT_GROUP.FRAME_TARGET_GAMEPAD_RIGHT)
+-- kelaSetsScene:AddFragment(GAMEPAD_NAV_QUADRANT_1_BACKGROUND_FRAGMENT)
+-- kelaSetsScene:AddFragment(MINIMIZE_CHAT_FRAGMENT)
+-- kelaSetsScene:AddFragment(GAMEPAD_MENU_SOUND_FRAGMENT)
+
+
+-- GAMEPAD_SETS_LIST_FRAGMENT = ZO_FadeSceneFragment:New(Kela_Sets_List_Gamepad)
+
+-- kelaSetsScene:AddFragment(GAMEPAD_SETS_LIST_FRAGMENT)
+
 local kelaSetsScene = SCENE_MANAGER:GetScene("kelaSets")
+--GAMEPAD_LEADERBOARDS_FRAGMENT = ZO_SimpleSceneFragment:New(ZO_Leaderboards_Gamepad)
+-- GAMEPAD_LEADERBOARDS_FRAGMENT:SetHideOnSceneHidden(true)
+GAMEPAD_SETS_LIST_FRAGMENT = ZO_FadeSceneFragment:New(Kela_Sets_List_Gamepad)
+
+
+
 kelaSetsScene:AddFragmentGroup(FRAGMENT_GROUP.GAMEPAD_DRIVEN_UI_WINDOW)
 kelaSetsScene:AddFragmentGroup(FRAGMENT_GROUP.FRAME_TARGET_GAMEPAD_RIGHT)
+-- GAMEPAD_LEADERBOARDS_SCENE:AddFragment(GAMEPAD_LEADERBOARDS_FRAGMENT)
+kelaSetsScene:AddFragment(GAMEPAD_SETS_LIST_FRAGMENT)
 kelaSetsScene:AddFragment(GAMEPAD_NAV_QUADRANT_1_BACKGROUND_FRAGMENT)
+kelaSetsScene:AddFragment(GAMEPAD_NAV_QUADRANT_2_3_4_BACKGROUND_FRAGMENT)
+-- kelaSetsScene:AddFragment(FRAME_EMOTE_FRAGMENT_JOURNAL)
 kelaSetsScene:AddFragment(MINIMIZE_CHAT_FRAGMENT)
 kelaSetsScene:AddFragment(GAMEPAD_MENU_SOUND_FRAGMENT)
 
+GAMEPAD_TOOLTIPS:AddTooltipInstantScene(GAMEPAD_RIGHT_TOOLTIP, kelaSetsScene)
 
-GAMEPAD_SETS_LIST_FRAGMENT = ZO_FadeSceneFragment:New(Kela_Sets_List_Gamepad)
 
-kelaSetsScene:AddFragment(GAMEPAD_SETS_LIST_FRAGMENT)
+
 
  
 local kelaResearchScene = SCENE_MANAGER:GetScene("kelaResearch")
@@ -133,7 +158,7 @@ function KelaPadUI_OnResearchCompleted(eventType, craftingSkillType, researchLin
 	-- KelaPostMsg("KelaPadUI_OnResearchCompleted")
 	KelaPadUI:InitializeResearchableItems()
 	--RefreshInfoTooltipResearchStation()
-	kelaInitializeResearchPanel(craftingSkillType, researchLineIndex)
+	kelaInitializeResearchPanel(craftingSkillType)
 end
 function KelaPadUI_OnResearchStarted(eventType, craftingSkillType, researchLineIndex, traitIndex)
 	if not kpuiSV.characters[KelaPadUI.unitName][craftingSkillType] then
@@ -144,7 +169,7 @@ function KelaPadUI_OnResearchStarted(eventType, craftingSkillType, researchLineI
 	-- KelaPostMsg("KelaPadUI_OnResearchStarted")
 	KelaPadUI:InitializeResearchableItems()
 	--RefreshInfoTooltipResearchStation()
-	kelaInitializeResearchPanel(craftingSkillType, researchLineIndex)
+	kelaInitializeResearchPanel(craftingSkillType)
 end
 function KelaPadUI_OnResearchCanseled(eventType, craftingSkillType, researchLineIndex, traitIndex)
 	if not kpuiSV.characters[KelaPadUI.unitName][craftingSkillType] then
@@ -155,7 +180,7 @@ function KelaPadUI_OnResearchCanseled(eventType, craftingSkillType, researchLine
 	-- KelaPostMsg("KelaPadUI_OnResearchCanseled")
 	KelaPadUI:InitializeResearchableItems()
 	--RefreshInfoTooltipResearchStation(true)
-	kelaInitializeResearchPanel(craftingSkillType, researchLineIndex)
+	kelaInitializeResearchPanel(craftingSkillType)
 end
 
 -- function KelaPadUI_RefreshResearchPanel(control)
@@ -330,12 +355,14 @@ function kelaAddInfoTooltip()
 		if(newState == "showing") then
 			kelaAddInfoTooltipMain()
 		elseif(newState == "hiding") then
+			KPUI_GAMEPAD_TOOLTIPS:ClearTooltip(KPUI_GAMEPAD_LEFT_TOOLTIP, false)
 			SCENE_MANAGER:RemoveFragment(KPUI_GAMEPAD_TOOLTIPS:GetTooltipFragment(KPUI_GAMEPAD_LEFT_TOOLTIP))
 			SCENE_MANAGER:RemoveFragment(KPUI_GAMEPAD_TOOLTIPS:GetTooltipBgFragment(KPUI_GAMEPAD_LEFT_TOOLTIP))
 			SCENE_MANAGER:RemoveFragment(KPUI_GAMEPAD_TOOLTIPS:GetTooltipFragment(KPUI_GAMEPAD_RIGHT_TOOLTIP))
 			SCENE_MANAGER:RemoveFragment(KPUI_GAMEPAD_TOOLTIPS:GetTooltipBgFragment(KPUI_GAMEPAD_RIGHT_TOOLTIP))	
 		end
 	end) 
+	
 end
 
 
@@ -356,6 +383,10 @@ local function KelaPadUI_OnLoaded(eventType, addonName)
 		end
 		
 
+
+
+
+
 		KelaPadUI.unitName = zo_strformat("<<1>>", GetUnitName("player"))
 		
 		setValueIfNil(kpuiSV, "showResearchInUpperRightCorner", true)
@@ -367,10 +398,13 @@ local function KelaPadUI_OnLoaded(eventType, addonName)
 		KelaPadUI:InitializeDialogs()		
 		
 		kelaInitializeResearchPanel()
+
+		-- if KelaSetsMasterListInitialized == false then KELA_SETS_LIST:SetMasterSetsList() end
+		KELA_SETS_LIST:SetMasterSetsList()
 		
 		--kelaInitializeInfoTooltipResearchMain()
-		kelaInitializeInfoTooltipCraftingMain()
-		kelaInitializeInfoTooltipSetsMain()
+		--kelaInitializeInfoTooltipCraftingMain()
+		--kelaInitializeInfoTooltipSetsMain()
 		
 		
 	
@@ -441,6 +475,7 @@ local function KelaPadUI_OnLoaded(eventType, addonName)
 		KPUI_GAMEPAD_TOOLTIPS.tooltips.KPUI_GAMEPAD_MAIN_TOOLTIP.control:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, 56, 53) 
 		KPUI_GAMEPAD_TOOLTIPS.tooltips.KPUI_GAMEPAD_MAIN_TOOLTIP.control:SetAnchor(BOTTOMLEFT, GuiRoot, BOTTOMLEFT, 56, -125) 		
 		KPUI_GAMEPAD_TOOLTIPS.tooltips.KPUI_GAMEPAD_MAIN_TOOLTIP.control:SetWidth(KELA_TOOLTIPS_WIDTH)		
+
 		
 		-- GAMEPAD_TOOLTIPS.tooltips.GAMEPAD_MOVABLE_TOOLTIP.control:SetWidth(KELA_TOOLTIPS_WIDTH)
 		-- GAMEPAD_TOOLTIPS.tooltips.GAMEPAD_LEFT_DIALOG_TOOLTIP.control:SetWidth(KELA_TOOLTIPS_WIDTH)
@@ -466,6 +501,8 @@ local function KelaPadUI_OnLoaded(eventType, addonName)
 		kelaReplaceTooltipChamps (tooltipChamp1)
 		kelaReplaceTooltipChamps (tooltipChamp2)
 		-- -- kelaReplaceTooltips (GAMEPAD_QUAD3_TOOLTIP)
+
+
 
 		CHAT_SYSTEM:AddMessage("KelaPadUI has been loaded")		
 		_initialized = true

@@ -122,7 +122,11 @@ function setValueIfNil(tab, name, defaultValue)
 	end
 	return false
 end
-
+function removeValueByKey(tbl, key)
+    local element = tbl[key]
+    tbl[key] = nil
+    --return element
+end
 
 function KelaPadUI:GetItemFlagStatus(bagId, slotIndex)
 	local flags = kpuiConst.ItemFlags
@@ -383,26 +387,26 @@ function KelaPadUI:GetitemCraftType(itemLink)
 	return nil
 end
 
-function KelaPadUI:GetitemCraftTypeString(intType)
-	if intType == WEAPONTYPE_BLACKSMITHING then
-		return GetString(KELA_WEAPONTYPE_BLACKSMITHING)
-	elseif intType == ARMORTYPE_HEAVY then
-		return GetString(KELA_ARMORTYPE_HEAVY)
-	elseif intType == WEAPONTYPE_BOW then
-		return GetString(KELA_WEAPONTYPE_BOW)
-	elseif intType == WEAPONTYPE_STAFF then
-		return GetString(KELA_WEAPONTYPE_STAFF)
-	elseif intType == WEAPONTYPE_SHIELD then
-		return GetString(KELA_WEAPONTYPE_SHIELD)
-	elseif intType == ARMORTYPE_LIGHT then
-		return GetString(KELA_ARMORTYPE_LIGHT)
-	elseif intType == ARMORTYPE_MEDIUM then
-		return GetString(KELA_ARMORTYPE_MEDIUM)
-	elseif intType == JEWELRYTYPE_RING_NECK then
-		return GetString(KELA_JEWELRYTYPE_RING_NECK)
-	end
-	return GetString(SI_SMITHING_RESEARCH_UNKNOWN)
-end
+-- function KelaPadUI:GetitemCraftTypeString(intType)
+	-- if intType == WEAPONTYPE_BLACKSMITHING then
+		-- return GetString(KELA_WEAPONTYPE_BLACKSMITHING)
+	-- elseif intType == ARMORTYPE_HEAVY then
+		-- return GetString(KELA_ARMORTYPE_HEAVY)
+	-- elseif intType == WEAPONTYPE_BOWGROUP then
+		-- return GetString(KELA_WEAPONTYPE_BOW)
+	-- elseif intType == WEAPONTYPE_STAFF then
+		-- return GetString(KELA_WEAPONTYPE_STAFF)
+	-- elseif intType == WEAPONTYPE_SHIELD then
+		-- return GetString(KELA_WEAPONTYPE_SHIELD)
+	-- elseif intType == ARMORTYPE_LIGHT then
+		-- return GetString(KELA_ARMORTYPE_LIGHT)
+	-- elseif intType == ARMORTYPE_MEDIUM then
+		-- return GetString(KELA_ARMORTYPE_MEDIUM)
+	-- elseif intType == JEWELRYTYPE_RING_NECK then
+		-- return GetString(KELA_JEWELRYTYPE_RING_NECK)
+	-- end
+	-- return GetString(SI_SMITHING_RESEARCH_UNKNOWN)
+-- end
 
 function KelaPadUI:GetBagInfo(itemLinkComparison, itemSize)
 	for _,bagId in ipairs(kpuiConst.Bags["ALL_CRAFTING_INVENTORY_BAGS_AND_WORN"]) do

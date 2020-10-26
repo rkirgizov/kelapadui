@@ -344,6 +344,50 @@
                     </Controls>
                 </Control>
 
+
+                <Control name="$(parent)CompareTooltip" inherits="KPUI_GamepadTooltipTemplate ZO_GamepadGrid_NavQuadrant_4_Anchors" hidden="true"/>
+
+                <Control name="$(parent)CompareTooltipBg" hidden="true">
+                    <Controls>
+                        <Control name="$(parent)Bg" inherits="ZO_SharedGamepadNavQuadrant_4_Background_Template" />
+                    </Controls>
+                </Control>
+
+                <Control name="$(parent)CompareHeaderContainer" inherits="ZO_GamepadGrid_NavQuadrant_4_Anchors" hidden="true">
+                    <Controls>
+                        <Control name="$(parent)ContentContainer" inherits="ZO_GamepadScreenHeaderContainer ZO_GamepadGrid_NavQuadrant_ContainerAnchors" />
+                    </Controls>
+                </Control>
+
+                <Control name="$(parent)CompareTooltipDarkBg" hidden="true">
+                    <Controls>
+                        <Control name="$(parent)Bg" inherits="ZO_SharedGamepadNavQuadrant_4_Background_Template" />
+                        <Control name="$(parent)Darkener" inherits="ZO_SharedGamepadNavQuadrant_4_Background_Template" />
+                    </Controls>
+                </Control>
+                <Control name="$(parent)Compare2Tooltip" inherits="KPUI_GamepadTooltipTemplate ZO_GamepadGrid_NavQuadrant_4_Anchors" hidden="true"/>
+
+                <Control name="$(parent)Compare2TooltipBg" hidden="true">
+                    <Controls>
+                        <Control name="$(parent)Bg" inherits="ZO_SharedGamepadNavQuadrant_4_Background_Template" />
+                    </Controls>
+                </Control>
+
+                <Control name="$(parent)Compare2HeaderContainer" inherits="ZO_GamepadGrid_NavQuadrant_4_Anchors" hidden="true">
+                    <Controls>
+                        <Control name="$(parent)ContentContainer" inherits="ZO_GamepadScreenHeaderContainer ZO_GamepadGrid_NavQuadrant_ContainerAnchors" />
+                    </Controls>
+                </Control>
+
+                <Control name="$(parent)Compare2TooltipDarkBg" hidden="true">
+                    <Controls>
+                        <Control name="$(parent)Bg" inherits="ZO_SharedGamepadNavQuadrant_4_Background_Template" />
+                        <Control name="$(parent)Darkener" inherits="ZO_SharedGamepadNavQuadrant_4_Background_Template" />
+                    </Controls>
+                </Control>
+
+
+
                 <Control name="$(parent)MovableTooltip" inherits="KPUI_GamepadTooltipTemplate ZO_GamepadGrid_NavQuadrant_4_Anchors" hidden="true"/>
 
                 <Control name="$(parent)MovableTooltipBg" hidden="true">
